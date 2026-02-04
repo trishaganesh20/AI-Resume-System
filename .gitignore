@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual env
+.venv/
+
+# Environment variables / secrets
+.env
+
+# Streamlit / misc
+.streamlit/
+outputs/
+data/uploads/
+
+# OS
+.DS_Store
