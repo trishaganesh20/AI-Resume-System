@@ -1,38 +1,92 @@
-# AI Resume Screening & Candidate Ranking System
+**AI Resume Screening and Candidate Ranking System**
 
-An AI-powered system that screens resumes, matches candidates to job descriptions, ranks them, and generates explainable hiring rationales with basic bias checks for transparency.
+**Project Overview:**
+The AI Resume Screening and Candidate Ranking System is an end-to-end analytics and AI application that screens resumes, matches candidates to job descriptions, ranks applicants, and generates explainable, bias-aware hiring insights.
 
-## Why this exists
-Recruiters review hundreds of resumes per role. Screening can be slow, inconsistent, and vulnerable to bias. This tool produces ranked, explainable shortlists and flags cases where sensitive information may affect ranking.
+This project simulates how modern recruiting, people analytics, and product teams use AI-assisted tools to improve hiring efficiency while maintaining transparency and human oversight.
 
-## Key Features
-- Upload resumes (PDF/DOCX/TXT) + paste a Job Description
-- Hybrid ranking:
-  - Embedding similarity (resume ↔ JD)
-  - Skill overlap (extracted JD skills)
-  - Experience heuristic
-- Explainability:
-  - Score breakdown + matched/missing skills
-  - Evidence snippets from resumes
-  - LLM-generated recruiter-friendly explanation
-- Bias awareness:
-  - Detect sensitive attributes (regex-based)
-  - Mask sensitive info and re-score
-  - Flag meaningful score deltas for human review
-- Export ranked results to CSV
+**Project Goal:**
 
-## Tech Stack
-Python, Streamlit, Pandas, OpenAI API, scikit-learn, pdfplumber, python-docx
+-Build an AI-powered system that helps recruiters and hiring managers:
 
-## How it works (high-level)
-Job Description → Skill extraction → Resume parsing → Hybrid scoring → Bias checks → Explanation → Export
+-Quickly evaluate large volumes of resumes
 
-## Run locally
-1. Install dependencies  
-   `pip install -r requirements.txt`
+-Understand why candidates are ranked a certain way
 
-2. Create a `.env` file in the project root:
-   `OPENAI_API_KEY="YOUR_KEY"`
+-Identify skill gaps and strengths
 
-3. Run:
-   `streamlit run app.py`
+-Detect potential bias signals before making hiring decisions
+
+**Core Problem**
+
+-Time-consuming
+
+-Inconsistent across reviewers
+
+-Difficult to explain or audit
+
+-Vulnerable to unconscious bias
+
+-Most automated screening tools act as black boxes, providing scores without clarity into how decisions are made.
+
+**Why I Built This:**
+I wanted to build a project that reflects how real analytics and product teams approach responsible AI in high-stakes domains like hiring.
+
+My goal was to go beyond simple resume matching by:
+
+Combining AI with rule-based analytics
+
+Prioritizing explainability over opaque scoring
+
+Introducing bias-awareness instead of claiming “bias-free AI”
+
+This project focuses on decision support, not decision replacement.
+
+
+**What This System Does**
+
+-Paste a job description
+
+-Upload multiple resumes (PDF, DOCX, or TXT)
+
+-Automatically extract job-relevant skills
+
+-Rank candidates using a hybrid scoring framework
+
+-Review matched and missing skills per candidate
+
+-See evidence snippets from resumes
+
+-Generate recruiter-friendly explanations
+
+-Flag cases where sensitive information may influence rankings
+
+-Export ranked results as a CSV for reporting or review
+
+
+**Architecture Overview**
+Job Description-->Skill and Requirement Extraction--> Resume Parsing (PDF / DOCX / TXT)--> Semantic Embeddings + Rule-Based Analysis--> Hybrid Candidate Scoring--> Bias Detection & Score Comparison--> Explainable Results & Insights--> CSV Export
+
+**Languages & Tools**
+
+-Python
+
+-Streamlit
+
+-Pandas
+
+-NumPy
+
+-AI & Analytics
+
+-OpenAI API (Embeddings + LLM explanations)
+
+-VS Code
+
+Integrate AI responsibly with transparency and oversight
+
+Design products that balance automation with human decision-making
+
+**Demo Video:**
+https://github.com/user-attachments/assets/dc21b87d-5234-4339-bb13-32d99c154fcb
+
