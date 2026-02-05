@@ -87,6 +87,6 @@ Integrate AI responsibly with transparency and oversight
 
 Design products that balance automation with human decision-making
 
-**Demo Video:** (used a job description of Senior Manager, Behavioral Analytics Model Validation at BMO for this demo and used my resume along with another resume)
+**Demo Video:** (used a job description: https://bmo.wd3.myworkdayjobs.com/en-US/External/details/Senior-Manager--Behavioral-Analytics-Model-Validation_R260001273?q=business+analyst for this demo)
 https://github.com/user-attachments/assets/dc21b87d-5234-4339-bb13-32d99c154fcb
 
