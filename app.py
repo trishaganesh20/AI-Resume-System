@@ -6,6 +6,7 @@ from src.config import Settings
 from src.io_utils import load_resume_file, safe_filename, ensure_dir
 from src.ranker import rank_candidates
 from src.explain import generate_explanation
+from src.agentic.orchestrator import AgentOrchestrator
 
 st.set_page_config(page_title="AI Resume Ranker", layout="wide")
 settings = Settings()
@@ -25,7 +26,8 @@ if "explanations" not in st.session_state:
     st.session_state.explanations = {}  # key: candidate_id -> explanation text
 if "jd_skills" not in st.session_state:
     st.session_state.jd_skills = []
-
+if "agent_logs" not in st.session_state:
+    st.session_state.agent_logs = []
 
 st.title("AI Resume Screening & Candidate Ranking")
 st.caption("Upload resumes + paste a job description → get ranked, explainable results with bias checks.")
@@ -53,6 +55,9 @@ with st.sidebar:
     run_btn = col1.button("Run Ranking", type="primary", use_container_width=True)
     reset_btn = col2.button("Reset", use_container_width=True)
 
+    st.header("Agentic Orchestration (Beta)")
+    auto_explain = st.checkbox("Auto-generate explanations for top 3", value=False)
+    agentic_btn = st.button("Run Agentic Pipeline", use_container_width=True)
 # Helpers
 def _save_uploaded_file(uploaded) -> str:
     ensure_dir("data/uploads")
@@ -126,6 +131,10 @@ if run_btn:
 # Display (uses session_state)
 if st.session_state.has_results:
     st.subheader("Ranked Candidates")
+    if st.session_state.agent_logs:
+        with st.expander("Agent run log", expanded=False):
+            for e in st.session_state.agent_logs:
+                st.write("• " + e)
     results = st.session_state.results
     df = st.session_state.df
 
@@ -213,6 +222,45 @@ if st.session_state.has_results:
                 )
             st.session_state.explanations[chosen.candidate_id] = explanation
             st.rerun()
+
+if agentic_btn:
+    if not jd_text.strip():
+        st.error("Please paste a Job Description first.")
+        st.stop()
+    if not files:
+        st.error("Please upload at least 1 resume.")
+        st.stop()
+
+    st.session_state.jd_text = jd_text
+
+    resume_items = []
+    raw_text_map = {}
+
+    with st.spinner("Reading resumes..."):
+        for f in files:
+            path = _save_uploaded_file(f)
+            text = load_resume_file(path)
+            resume_items.append((f.name, text))
+            raw_text_map[f.name] = text
+
+    st.session_state.raw_text_map = raw_text_map
+
+    with st.spinner("Running agentic pipeline..."):
+        orch = AgentOrchestrator(Settings())
+        state = orch.run(
+            jd_text=jd_text,
+            resumes=resume_items,
+            auto_explain_top_k=3 if auto_explain else 0,
+        )
+
+    # store outputs like your normal run
+    st.session_state.has_results = True
+    st.session_state.df = state.ranked_df
+    st.session_state.jd_skills = state.jd_skills
+    st.session_state.explanations = state.explanations
+    st.session_state.agent_logs = state.events
+
+    st.rerun()
 
 else:
     st.info("Paste a job description and upload resumes, then click **Run Ranking**.")
